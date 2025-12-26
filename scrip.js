@@ -1,72 +1,107 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Находим все элементы вопросов
-    const questionItems = document.querySelectorAll('.question-item');
+    const faqItems = document.querySelectorAll('.faq-item');
     
-    // Добавляем обработчик клика на каждый вопрос
-    questionItems.forEach(item => {
-        const header = item.querySelector('.question-header');
+    // Открываем первый вопрос при загрузке
+    if (faqItems.length > 0) {
+        openFaqItem(faqItems[0]);
+    }
+    
+    // Добавляем обработчики на все вопросы
+    faqItems.forEach(item => {
+        const questionBtn = item.querySelector('.faq-question');
         
-        header.addEventListener('click', function() {
+        questionBtn.addEventListener('click', function() {
             // Закрываем другие открытые вопросы
-            questionItems.forEach(otherItem => {
+            faqItems.forEach(otherItem => {
                 if (otherItem !== item && otherItem.classList.contains('active')) {
-                    closeQuestion(otherItem);
+                    closeFaqItem(otherItem);
                 }
             });
             
             // Открываем/закрываем текущий вопрос
-            toggleQuestion(item);
-        });
-    });
-    
-    // Функция для переключения состояния вопроса
-    function toggleQuestion(item) {
-        if (item.classList.contains('active')) {
-            closeQuestion(item);
-        } else {
-            openQuestion(item);
-        }
-    }
-    
-    // Функция открытия вопроса
-    function openQuestion(item) {
-        item.classList.add('active');
-        
-        // Добавляем небольшую задержку для плавности
-        setTimeout(() => {
-            const answerContent = item.querySelector('.answer-content');
-            answerContent.style.maxHeight = answerContent.scrollHeight + 'px';
-        }, 10);
-    }
-    
-    // Функция закрытия вопроса
-    function closeQuestion(item) {
-        const answerContent = item.querySelector('.answer-content');
-        answerContent.style.maxHeight = '0';
-        
-        // Удаляем класс active после завершения анимации
-        setTimeout(() => {
-            item.classList.remove('active');
-        }, 300);
-    }
-    
-    // Открываем первый вопрос по умолчанию (опционально)
-    // openQuestion(questionItems[0]);
-    
-    // Добавляем поддержку клавиатуры
-    questionItems.forEach(item => {
-        const header = item.querySelector('.question-header');
-        
-        header.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                header.click();
+            if (item.classList.contains('active')) {
+                closeFaqItem(item);
+            } else {
+                openFaqItem(item);
             }
         });
         
-        // Делаем элемент доступным для таб-навигации
-        header.setAttribute('tabindex', '0');
-        header.setAttribute('role', 'button');
-        header.setAttribute('aria-expanded', 'false');
+        // Поддержка клавиатуры
+        questionBtn.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+        
+        // Атрибуты доступности
+        questionBtn.setAttribute('aria-expanded', 'false');
+        questionBtn.setAttribute('role', 'button');
+    });
+    
+    // Функция открытия вопроса
+    function openFaqItem(item) {
+        const answer = item.querySelector('.faq-answer');
+        const answerContent = item.querySelector('.answer-content');
+        
+        // Получаем реальную высоту контента
+        const contentHeight = answerContent.scrollHeight;
+        
+        // Устанавливаем высоту для анимации
+        answer.style.maxHeight = contentHeight + 'px';
+        
+        // Добавляем класс active
+        item.classList.add('active');
+        
+        // Обновляем атрибуты доступности
+        const btn = item.querySelector('.faq-question');
+        btn.setAttribute('aria-expanded', 'true');
+        
+        // Ждем завершения анимации, затем сбрасываем max-height
+        setTimeout(() => {
+            if (item.classList.contains('active')) {
+                answer.style.maxHeight = 'none';
+            }
+        }, 500);
+    }
+    
+    // Функция закрытия вопроса
+    function closeFaqItem(item) {
+        const answer = item.querySelector('.faq-answer');
+        const answerContent = item.querySelector('.answer-content');
+        
+        // Получаем текущую высоту
+        const contentHeight = answerContent.scrollHeight;
+        
+        // Временно устанавливаем фиксированную высоту перед анимацией
+        answer.style.maxHeight = contentHeight + 'px';
+        
+        // Ждем следующего кадра для начала анимации
+        requestAnimationFrame(() => {
+            // Запускаем анимацию закрытия
+            answer.style.maxHeight = '0';
+            
+            // Удаляем класс active после анимации
+            setTimeout(() => {
+                item.classList.remove('active');
+                answer.style.maxHeight = '';
+                
+                // Обновляем атрибуты доступности
+                const btn = item.querySelector('.faq-question');
+                btn.setAttribute('aria-expanded', 'false');
+            }, 300);
+        });
+    }
+    
+    // Анимация для кнопок
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px)';
+        });
+        
+        btn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
     });
 });
