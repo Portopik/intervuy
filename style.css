@@ -1,268 +1,70 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* Добавь в конец style.css */
 
-body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: #e0e0e0;
-    min-height: 100vh;
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Шапка */
-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-top: 20px;
-}
-
-header h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #00adb5;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
-
-header h1 i {
-    color: #ffd369;
-    font-size: 2.2rem;
-}
-
-.subtitle {
-    font-size: 1.2rem;
-    color: #bbbbbb;
-    font-weight: 300;
-}
-
-/* Герой-секция */
-.hero {
-    background: linear-gradient(90deg, #222831 0%, #393e46 100%);
-    border-radius: 15px;
-    padding: 25px 30px;
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    border-left: 5px solid #00adb5;
-}
-
-.hero-content h2 {
-    font-family: 'Montserrat', sans-serif;
-    color: #ffd369;
-    margin-bottom: 8px;
-    font-size: 1.8rem;
-}
-
-.hero-content p {
-    color: #bbbbbb;
-    font-size: 1.1rem;
-}
-
-.minecraft-icon {
-    font-size: 3.5rem;
-    color: #00adb5;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-/* Контейнер вопросов */
-.interview-container {
-    margin-bottom: 50px;
-}
-
-/* Элемент вопроса */
-.question-item {
-    background: #222831;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.question-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.question-header {
-    display: flex;
-    align-items: center;
-    padding: 22px 25px;
-    cursor: pointer;
-    background: #2d4059;
-    transition: background 0.3s;
-}
-
-.question-header:hover {
-    background: #364f73;
-}
-
-.question-number {
-    background: #00adb5;
-    color: white;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-right: 18px;
-    flex-shrink: 0;
-}
-
-.question-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #eeeeee;
-    flex-grow: 1;
-}
-
-.question-toggle {
-    color: #ffd369;
-    font-size: 1.3rem;
-    transition: transform 0.4s ease;
-}
-
-.question-item.active .question-toggle {
-    transform: rotate(180deg);
-}
-
-/* Контент ответа */
-.answer-content {
+/* Улучшенная анимация для FAQ */
+.faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease, padding 0.3s ease;
-    background: #1a1a2e;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: max-height;
 }
 
-.question-item.active .answer-content {
-    max-height: 500px;
+.faq-item.active .faq-answer {
+    overflow: visible;
 }
 
-.answer-text {
-    padding: 0 25px;
-    font-size: 1.2rem;
-    line-height: 1.7;
-    color: #bbbbbb;
+.answer-content {
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition-delay: 0.1s;
 }
 
-.question-item.active .answer-text {
+.faq-item.active .answer-content {
     opacity: 1;
     transform: translateY(0);
-    padding: 25px;
 }
 
-/* Футер */
-footer {
-    margin-top: 50px;
-    padding-top: 30px;
-    border-top: 1px solid #393e46;
-}
-
-.footer-content {
-    text-align: center;
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-}
-
-.social-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.telegram {
-    background: #0088cc;
-    color: white;
-}
-
-.chat {
-    background: #ffd369;
-    color: #222831;
-}
-
-.social-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-}
-
-.copyright {
-    color: #777;
-    font-size: 0.95rem;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2rem;
-        flex-direction: column;
-        gap: 10px;
+/* Плавное появление элементов при загрузке */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-    
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    
-    .hero-content h2 {
-        font-size: 1.5rem;
-    }
-    
-    .question-text {
-        font-size: 1.1rem;
-    }
-    
-    .question-header {
-        padding: 18px 20px;
-    }
-    
-    .social-links {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .social-btn {
-        width: 250px;
-        justify-content: center;
-    }
-  }
+}
+
+.faq-item, .info-card, .intro {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+.faq-item:nth-child(1) { animation-delay: 0.1s; }
+.faq-item:nth-child(2) { animation-delay: 0.2s; }
+.faq-item:nth-child(3) { animation-delay: 0.3s; }
+.faq-item:nth-child(4) { animation-delay: 0.4s; }
+.faq-item:nth-child(5) { animation-delay: 0.5s; }
+.faq-item:nth-child(6) { animation-delay: 0.6s; }
+.info-card { animation-delay: 0.7s; }
+
+/* Улучшенная анимация переключения иконок */
+.faq-toggle i {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.faq-toggle .fa-minus {
+    transform: rotate(-90deg);
+    opacity: 0;
+}
+
+.faq-item.active .faq-toggle .fa-plus {
+    transform: rotate(90deg);
+    opacity: 0;
+}
+
+.faq-item.active .faq-toggle .fa-minus {
+    transform: rotate(0);
+    opacity: 1;
+}
